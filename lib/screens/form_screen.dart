@@ -73,7 +73,7 @@ class _FormScreenState extends State<FormScreen> {
                       },
                       controller: nameController,
                       textAlign: TextAlign.center,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                           border: OutlineInputBorder(),
                           hintText: 'Nome',
                           fillColor: Colors.white70,
@@ -93,7 +93,7 @@ class _FormScreenState extends State<FormScreen> {
                       keyboardType: TextInputType.number,
                       controller: difficultyController,
                       textAlign: TextAlign.center,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                           border: OutlineInputBorder(),
                           hintText: 'Dificuldade',
                           fillColor: Colors.white70,
@@ -113,7 +113,7 @@ class _FormScreenState extends State<FormScreen> {
                       keyboardType: TextInputType.url,
                       controller: imageController,
                       textAlign: TextAlign.center,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                           border: OutlineInputBorder(),
                           hintText: 'Imagem',
                           fillColor: Colors.white70,
@@ -157,14 +157,14 @@ class _FormScreenState extends State<FormScreen> {
                               int.parse(difficultyController.text)
                           );
                           ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
+                              const SnackBar(
                                   content: Text('Nova tarefa criada!')
                               )
                           );
                           Navigator.pop(context);
                         }
                       },
-                      child: Text('Adicionar', style: TextStyle(color: Colors.white),))
+                      child: const Text('Adicionar', style: TextStyle(color: Colors.white),))
                 ],
               ),
             ),

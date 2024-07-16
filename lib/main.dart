@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:nosso_primeiro_projeto/data/task_inherited.dart';
+import 'package:nosso_primeiro_projeto/screens/form_screen.dart';
 import 'package:nosso_primeiro_projeto/screens/initial_screen.dart';
 
 void main() {
@@ -11,12 +13,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Só o Basiquinho',
+      title: 'Tarefas',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
         useMaterial3: true,
       ),
-      home: const InitialScreen(),
+      home: TaskInherited(child: const InitialScreen(),),
     );
   }
 }

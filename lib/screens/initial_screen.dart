@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:nosso_primeiro_projeto/components/task.dart';
+import 'package:nosso_primeiro_projeto/data/task_inherited.dart';
+import 'package:nosso_primeiro_projeto/screens/form_screen.dart';
 
 class InitialScreen extends StatefulWidget {
-
   const InitialScreen({super.key});
 
   @override
@@ -10,38 +10,73 @@ class InitialScreen extends StatefulWidget {
 }
 
 class _InitialScreenState extends State<InitialScreen> {
-  bool opacity = true;
+  int totalLvl = 0;
+
+  void sumTotalLvl() {
+    setState(() {
+      totalLvl = TaskInherited.of(context).taskList.fold(0, (previousValue, element) => previousValue + element.nivel);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
+    sumTotalLvl();
+
     return Scaffold(
       appBar: AppBar(
-        leading: Container(),
-        backgroundColor: Colors.blue,
-        title: const Text('Tarefas', style: TextStyle(color: Colors.white)),
-      ),
-      body: AnimatedOpacity(
-        opacity: opacity ? 1 : 0,
-        duration: const Duration(milliseconds: 800),
-        child: ListView(
-          children: const [
-            Task('Aprender Flutter', 'assets/images/dash.png', 3),
-            Task('Rachar', 'assets/images/fut.jpg', 4),
-            Task('Assistir o Corintia', 'assets/images/craque_neto.jpg', 5),
-            Task('Jogar', 'assets/images/game.jpg', 2),
-            Task('Descansar', 'assets/images/praia.jpeg', 1),
-            SizedBox(height: 80,)
+          backgroundColor: Colors.blue,
+          leading: const SizedBox(),
+          title: const Text('Tarefas', style: TextStyle(color: Colors.white)),
+          actions: [
+            Padding(
+              padding: const EdgeInsets.only(right: 25.0),
+              child: IconButton(onPressed: sumTotalLvl, icon: const Icon(Icons.sync, color: Colors.white,)),
+            )
           ],
+          bottom: PreferredSize(
+            preferredSize: const Size.fromHeight(20),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: SizedBox(
+                    width: 200,
+                    child: LinearProgressIndicator(
+                      color: Colors.white,
+                      value: 0.5,
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(12),
+                  child: Text(
+                    'Nível: $totalLvl',
+                    style: const TextStyle(color: Colors.white, fontSize: 16),
+                  ),
+                )
+              ],
+            )
+          ),
         ),
+      body: ListView(
+        padding: const EdgeInsets.only(top: 8, bottom: 70),
+        children: TaskInherited.of(context).taskList,
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => {
-          setState(() {
-            opacity = !opacity;
-          })
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (newContext) => FormScreen(taskContext: context)
+            )
+          )
         },
         backgroundColor: Colors.blue,
-        child: const Icon(Icons.remove_red_eye),
+        child: const Icon(
+          Icons.add,
+          color: Colors.white,
+        ),
       ),
     );
   }

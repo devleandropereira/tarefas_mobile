@@ -7,15 +7,23 @@ class Task extends StatefulWidget {
   final String urlImage;
   final int difficulty;
 
-  const Task(this.nome, this.urlImage, this.difficulty, {super.key});
+  Task(this.nome, this.urlImage, this.difficulty, {super.key});
+
+  int nivel = 1;
 
   @override
   State<Task> createState() => _TaskState();
 }
 
 class _TaskState extends State<Task> {
-  int nivel = 1;
   int maestria = 0;
+  bool assetOrNetwork() {
+    if (widget.urlImage.contains('http')) {
+      return false;
+    }
+
+    return true;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +34,6 @@ class _TaskState extends State<Task> {
           Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(4.0),
-              // Azul, verde, amarelo, laranja, vermelho, roxo e preto
               color: maestria >= 6 ? Colors.black
                   : maestria == 5 ? Colors.purpleAccent
                   : maestria == 4 ? Colors.red
@@ -59,7 +66,10 @@ class _TaskState extends State<Task> {
                       height: 100,
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(4.0),
-                        child: Image.asset(
+                        child: assetOrNetwork() ? Image.asset(
+                          widget.urlImage,
+                          fit: BoxFit.cover,
+                        ) : Image.network(
                           widget.urlImage,
                           fit: BoxFit.cover,
                         ),
@@ -86,12 +96,12 @@ class _TaskState extends State<Task> {
                       child: ElevatedButton(
                           onPressed: () {
                             setState(() {
-                              nivel++;
-                              bool upLevel = (nivel/widget.difficulty)/10 > 1;
+                              widget.nivel++;
+                              bool upLevel = (widget.nivel/widget.difficulty)/10 > 1;
                               if (upLevel) {
                                 if (maestria <= 5) {
                                   maestria++;
-                                  nivel = 1;
+                                  widget.nivel = 1;
                                 }
                               }
                             });
@@ -115,7 +125,8 @@ class _TaskState extends State<Task> {
                               ),
                               Text('UP', style: TextStyle(fontSize: 12, color: Colors.white))
                             ],
-                          )),
+                          )
+                      ),
                     )
                   ],
                 ),
@@ -129,14 +140,14 @@ class _TaskState extends State<Task> {
                       width: 200,
                       child: LinearProgressIndicator(
                         color: Colors.white,
-                        value: widget.difficulty > 0 ? (nivel/widget.difficulty) / 10 : 1,
+                        value: widget.difficulty > 0 ? (widget.nivel/widget.difficulty) / 10 : 1,
                       ),
                     ),
                   ),
                   Padding(
                     padding: const EdgeInsets.all(12),
                     child: Text(
-                      'Nível: $nivel',
+                      'Nível: ${widget.nivel}',
                       style: const TextStyle(color: Colors.white, fontSize: 16),
                     ),
                   )
